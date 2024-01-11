@@ -49,7 +49,7 @@
 <script setup>
 import AppInput from '@/components/AppInput.vue'
 import axios from 'axios'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 const formState = reactive({
   username: undefined,
   email: undefined,
@@ -72,6 +72,27 @@ const isDisabled = computed(() => {
 const passwordMatchError = computed(() => {
   return formState.password !== formState.passwordRepeat ? 'Password mismatch' : ''
 })
+
+watch(
+  () => formState.username,
+  () => {
+    delete errors.value.username
+  }
+)
+
+watch(
+  () => formState.email,
+  () => {
+    delete errors.value.email
+  }
+)
+
+watch(
+  () => formState.password,
+  () => {
+    delete errors.value.password
+  }
+)
 
 const submit = async () => {
   apiProgress.value = true
@@ -137,6 +158,17 @@ export default {
       return this.formState.password || this.formState.passwordRepeat
         ? this.formState.password !== this.formState.passwordRepeat
         : true
+    }
+  },
+  watch: {
+    'formState.username'() {
+      delete this.errors.username
+    },
+    'formState.email'() {
+      delete this.errors.email
+    },
+    'formState.password'() {
+      delete this.errors.password
     }
   }
 }
