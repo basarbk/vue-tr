@@ -3,11 +3,14 @@
     <label :for="id" class="form-label">{{ label }}</label>
     <input
       class="form-control"
+      :class="{ 'is-invalid': help }"
       :id="id"
       @input="$emit('update:modelValue', $event.target.value)"
       :type="type"
     />
-    {{ help }}
+    <div class="invalid-feedback">
+      {{ help }}
+    </div>
   </div>
 </template>
 <script setup>
