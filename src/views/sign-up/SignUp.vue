@@ -26,6 +26,9 @@
             v-model="formState.passwordRepeat"
           />
         </div>
+        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
         <div class="text-center">
           <button :disabled="isDisabled || apiProgress" class="btn btn-primary">
             <span
@@ -55,6 +58,7 @@ const formState = reactive({
 
 const apiProgress = ref(false)
 const successMessage = ref()
+const errorMessage = ref()
 
 const isDisabled = computed(() => {
   return formState.password || formState.passwordRepeat
@@ -64,10 +68,16 @@ const isDisabled = computed(() => {
 
 const submit = async () => {
   apiProgress.value = true
+  errorMessage.value = undefined
   // eslint-disable-next-line no-unused-vars
   const { passwordRepeat, ...body } = formState
-  const response = await axios.post('/api/v1/users', body)
-  successMessage.value = response.data.message
+  try {
+    const response = await axios.post('/api/v1/users', body)
+    successMessage.value = response.data.message
+  } catch (apiError) {
+    errorMessage.value = 'Unexpected error occured, please try again'
+    apiProgress.value = false
+  }
 }
 </script>
 <!-- <script>
@@ -83,16 +93,23 @@ export default {
         passwordRepeat: undefined
       },
       apiProgress: false,
-      successMessage: undefined
+      successMessage: undefined,
+      errorMessage: undefined
     }
   },
   methods: {
     async submit() {
       this.apiProgress = true
+      this.errorMessage = undefined
       // eslint-disable-next-line no-unused-vars
       const { passwordRepeat, ...body } = this.formState
-      const response = await axios.post('/api/v1/users', body)
-      this.successMessage = response.data.message
+      try {
+        const response = await axios.post('/api/v1/users', body)
+        this.successMessage = response.data.message
+      } catch {
+        this.errorMessage = 'Unexpected error occured, please try again'
+        this.apiProgress = false
+      }
     }
   },
   computed: {
