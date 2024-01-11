@@ -8,6 +8,7 @@
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <input class="form-control" id="username" v-model="formState.username" />
+          {{ errors.username }}
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">E-mail</label>
@@ -56,6 +57,8 @@ const formState = reactive({
   passwordRepeat: undefined
 })
 
+const errors = ref({})
+
 const apiProgress = ref(false)
 const successMessage = ref()
 const errorMessage = ref()
@@ -75,7 +78,11 @@ const submit = async () => {
     const response = await axios.post('/api/v1/users', body)
     successMessage.value = response.data.message
   } catch (apiError) {
-    errorMessage.value = 'Unexpected error occured, please try again'
+    if (apiError.response.status === 400) {
+      errors.value = apiError.response.data.validationErrors
+    } else {
+      errorMessage.value = 'Unexpected error occured, please try again'
+    }
     apiProgress.value = false
   }
 }
@@ -94,7 +101,8 @@ export default {
       },
       apiProgress: false,
       successMessage: undefined,
-      errorMessage: undefined
+      errorMessage: undefined,
+      errors: {}
     }
   },
   methods: {
@@ -106,8 +114,12 @@ export default {
       try {
         const response = await axios.post('/api/v1/users', body)
         this.successMessage = response.data.message
-      } catch {
-        this.errorMessage = 'Unexpected error occured, please try again'
+      } catch (apiError){
+        if (apiError.response.status === 400) {
+          this.errors = apiError.response.data.validationErrors
+        } else {
+          this.errorMessage = 'Unexpected error occured, please try again'
+        }
         this.apiProgress = false
       }
     }
