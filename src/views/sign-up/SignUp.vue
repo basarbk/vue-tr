@@ -27,7 +27,14 @@
           />
         </div>
         <div class="text-center">
-          <button :disabled="isDisabled" class="btn btn-primary">Sign Up</button>
+          <button :disabled="isDisabled || apiProgress" class="btn btn-primary">
+            <span
+              v-if="apiProgress"
+              class="spinner-border spinner-border-sm"
+              aria-hidden="true"
+            ></span>
+            Sign Up
+          </button>
         </div>
       </div>
     </form>
@@ -35,13 +42,15 @@
 </template>
 <script setup>
 import axios from 'axios'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 const formState = reactive({
   username: undefined,
   email: undefined,
   password: undefined,
   passwordRepeat: undefined
 })
+
+const apiProgress = ref(false)
 
 const isDisabled = computed(() => {
   return formState.password || formState.passwordRepeat
@@ -50,6 +59,7 @@ const isDisabled = computed(() => {
 })
 
 const submit = () => {
+  apiProgress.value = true
   // eslint-disable-next-line no-unused-vars
   const { passwordRepeat, ...body } = formState
   axios.post('/api/v1/users', body)
@@ -66,11 +76,13 @@ export default {
         email: undefined,
         password: undefined,
         passwordRepeat: undefined
-      }
+      },
+      apiProgress: false
     }
   },
   methods: {
     submit() {
+      this.apiProgress = true
       // eslint-disable-next-line no-unused-vars
       const { passwordRepeat, ...body } = this.formState.axios.post('/api/v1/users', body)
     }
