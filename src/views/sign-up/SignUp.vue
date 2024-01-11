@@ -1,6 +1,6 @@
 <template>
   <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-    <form class="card" @submit.prevent="submit">
+    <form class="card" @submit.prevent="submit" v-if="!successMessage">
       <div class="card-header">
         <h1 class="text-center">Sign Up</h1>
       </div>
@@ -38,6 +38,9 @@
         </div>
       </div>
     </form>
+    <div v-else class="alert alert-success" role="alert">
+      {{ successMessage }}
+    </div>
   </div>
 </template>
 <script setup>
@@ -51,6 +54,7 @@ const formState = reactive({
 })
 
 const apiProgress = ref(false)
+const successMessage = ref()
 
 const isDisabled = computed(() => {
   return formState.password || formState.passwordRepeat
@@ -58,11 +62,12 @@ const isDisabled = computed(() => {
     : true
 })
 
-const submit = () => {
+const submit = async () => {
   apiProgress.value = true
   // eslint-disable-next-line no-unused-vars
   const { passwordRepeat, ...body } = formState
-  axios.post('/api/v1/users', body)
+  const response = await axios.post('/api/v1/users', body)
+  successMessage.value = response.data.message
 }
 </script>
 <!-- <script>
@@ -77,14 +82,17 @@ export default {
         password: undefined,
         passwordRepeat: undefined
       },
-      apiProgress: false
+      apiProgress: false,
+      successMessage: undefined
     }
   },
   methods: {
-    submit() {
+    async submit() {
       this.apiProgress = true
       // eslint-disable-next-line no-unused-vars
-      const { passwordRepeat, ...body } = this.formState.axios.post('/api/v1/users', body)
+      const { passwordRepeat, ...body } = this.formState
+      const response = await axios.post('/api/v1/users', body)
+      this.successMessage = response.data.message
     }
   },
   computed: {
