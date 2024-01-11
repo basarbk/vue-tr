@@ -5,28 +5,26 @@
         <h1 class="text-center">Sign Up</h1>
       </div>
       <div class="card-body">
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input class="form-control" id="username" v-model="formState.username" />
-          {{ errors.username }}
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">E-mail</label>
-          <input class="form-control" id="email" v-model="formState.email" />
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input class="form-control" id="password" type="password" v-model="formState.password" />
-        </div>
-        <div class="mb-3">
-          <label for="passwordRepeat" class="form-label">Password Repeat</label>
-          <input
-            class="form-control"
-            id="passwordRepeat"
-            type="password"
-            v-model="formState.passwordRepeat"
-          />
-        </div>
+        <AppInput
+          id="username"
+          label="Username"
+          :help="errors.username"
+          v-model="formState.username"
+        />
+        <AppInput id="email" label="E-mail" :help="errors.email" v-model="formState.email" />
+        <AppInput
+          id="password"
+          label="Password"
+          :help="errors.password"
+          v-model="formState.password"
+          type="password"
+        />
+        <AppInput
+          id="passwordRepeat"
+          label="Password Repeat"
+          v-model="formState.passwordRepeat"
+          type="password"
+        />
         <div v-if="errorMessage" class="alert alert-danger" role="alert">
           {{ errorMessage }}
         </div>
@@ -48,6 +46,7 @@
   </div>
 </template>
 <script setup>
+import AppInput from '@/components/AppInput.vue'
 import axios from 'axios'
 import { computed, reactive, ref } from 'vue'
 const formState = reactive({
@@ -89,8 +88,12 @@ const submit = async () => {
 </script>
 <!-- <script>
 import axios from 'axios'
+import AppInput from '@/components/AppInput.vue'
 
 export default {
+  components: {
+    AppInput
+  },
   data() {
     return {
       formState: {
@@ -114,7 +117,7 @@ export default {
       try {
         const response = await axios.post('/api/v1/users', body)
         this.successMessage = response.data.message
-      } catch (apiError){
+      } catch (apiError) {
         if (apiError.response.status === 400) {
           this.errors = apiError.response.data.validationErrors
         } else {
