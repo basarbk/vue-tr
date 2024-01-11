@@ -24,6 +24,7 @@
           label="Password Repeat"
           v-model="formState.passwordRepeat"
           type="password"
+          :help="passwordMatchError"
         />
         <div v-if="errorMessage" class="alert alert-danger" role="alert">
           {{ errorMessage }}
@@ -66,6 +67,10 @@ const isDisabled = computed(() => {
   return formState.password || formState.passwordRepeat
     ? formState.password !== formState.passwordRepeat
     : true
+})
+
+const passwordMatchError = computed(() => {
+  return formState.password !== formState.passwordRepeat ? 'Password mismatch' : ''
 })
 
 const submit = async () => {
