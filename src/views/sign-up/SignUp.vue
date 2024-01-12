@@ -48,7 +48,7 @@
 </template>
 <script setup>
 import AppInput from '@/components/AppInput.vue'
-import axios from 'axios'
+import signUp from './api'
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -103,7 +103,7 @@ const submit = async () => {
   // eslint-disable-next-line no-unused-vars
   const { passwordRepeat, ...body } = formState
   try {
-    const response = await axios.post('/api/v1/users', body)
+    const response = await signUp(body)
     successMessage.value = response.data.message
   } catch (apiError) {
     if (apiError.response?.status === 400) {
@@ -116,8 +116,8 @@ const submit = async () => {
 }
 </script>
 <!-- <script>
-import axios from 'axios'
 import AppInput from '@/components/AppInput.vue'
+import signUp from './api'
 
 export default {
   components: {
@@ -144,7 +144,7 @@ export default {
       // eslint-disable-next-line no-unused-vars
       const { passwordRepeat, ...body } = this.formState
       try {
-        const response = await axios.post('/api/v1/users', body)
+        const response = await signUp(body)
         this.successMessage = response.data.message
       } catch (apiError) {
         if (apiError.response?.status === 400) {
