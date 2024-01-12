@@ -4,7 +4,7 @@ import tr from './translations/tr.json'
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
+  locale: localStorage.getItem('lang') || navigator.language || 'en',
   messages: {
     en,
     tr
