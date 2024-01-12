@@ -2,26 +2,26 @@
   <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
     <form class="card" @submit.prevent="submit" v-if="!successMessage">
       <div class="card-header">
-        <h1 class="text-center">Sign Up</h1>
+        <h1 class="text-center">{{ $t('signUp') }}</h1>
       </div>
       <div class="card-body">
         <AppInput
           id="username"
-          label="Username"
+          :label="$t('username')"
           :help="errors.username"
           v-model="formState.username"
         />
-        <AppInput id="email" label="E-mail" :help="errors.email" v-model="formState.email" />
+        <AppInput id="email" :label="$t('email')" :help="errors.email" v-model="formState.email" />
         <AppInput
           id="password"
-          label="Password"
+          :label="$t('password')"
           :help="errors.password"
           v-model="formState.password"
           type="password"
         />
         <AppInput
           id="passwordRepeat"
-          label="Password Repeat"
+          :label="$t('passwordRepeat')"
           v-model="formState.passwordRepeat"
           type="password"
           :help="passwordMatchError"
@@ -36,7 +36,7 @@
               class="spinner-border spinner-border-sm"
               aria-hidden="true"
             ></span>
-            Sign Up
+            {{ $t('signUp') }}
           </button>
         </div>
       </div>
@@ -50,6 +50,9 @@
 import AppInput from '@/components/AppInput.vue'
 import axios from 'axios'
 import { computed, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 const formState = reactive({
   username: undefined,
   email: undefined,
@@ -70,7 +73,7 @@ const isDisabled = computed(() => {
 })
 
 const passwordMatchError = computed(() => {
-  return formState.password !== formState.passwordRepeat ? 'Password mismatch' : ''
+  return formState.password !== formState.passwordRepeat ? t('passwordMismatch') : ''
 })
 
 watch(
@@ -103,10 +106,10 @@ const submit = async () => {
     const response = await axios.post('/api/v1/users', body)
     successMessage.value = response.data.message
   } catch (apiError) {
-    if (apiError.response.status === 400) {
+    if (apiError.response?.status === 400) {
       errors.value = apiError.response.data.validationErrors
     } else {
-      errorMessage.value = 'Unexpected error occured, please try again'
+      errorMessage.value = t('genericError')
     }
     apiProgress.value = false
   }
@@ -144,10 +147,10 @@ export default {
         const response = await axios.post('/api/v1/users', body)
         this.successMessage = response.data.message
       } catch (apiError) {
-        if (apiError.response.status === 400) {
+        if (apiError.response?.status === 400) {
           this.errors = apiError.response.data.validationErrors
         } else {
-          this.errorMessage = 'Unexpected error occured, please try again'
+          this.errorMessage = this.$t('genericError')
         }
         this.apiProgress = false
       }
