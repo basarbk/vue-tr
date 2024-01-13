@@ -13,12 +13,12 @@
   </div>
 </template>
 <script setup>
-import axios from 'axios'
 import { watchEffect, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import AppSpinner from '@/components/AppSpinner.vue'
 import AppAlert from '@/components/AppAlert.vue'
+import activate from './api'
 const { t } = useI18n()
 const route = useRoute()
 
@@ -29,7 +29,7 @@ const status = ref()
 watchEffect(async () => {
   status.value = 'loading'
   try {
-    const response = await axios.patch(`/api/v1/users/${route.params.token}/active`)
+    const response = await activate(route.params.token)
     successMessage.value = response.data.message
     status.value = 'success'
   } catch (apiError) {
@@ -43,9 +43,15 @@ watchEffect(async () => {
 })
 </script>
 <!-- <script>
-import axios from 'axios'
+import AppSpinner from '@/components/AppSpinner.vue'
+import AppAlert from '@/components/AppAlert.vue'
+import activate from './api'
 
 export default {
+  components: {
+    AppSpinner,
+    AppAlert
+  },
   data() {
     return {
       status: undefined,
@@ -60,7 +66,7 @@ export default {
     async sendActivationRequest() {
       this.status = 'loading'
       try {
-        const response = await axios.patch(`/api/v1/users/${this.$route.params.token}/active`)
+        const response = await activate(this.$route.params.token)
         this.successMessage = response.data.message
         this.status = 'success'
       } catch (apiError) {

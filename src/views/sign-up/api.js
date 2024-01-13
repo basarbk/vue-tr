@@ -1,10 +1,5 @@
-import axios from 'axios'
-import i18n from '@/locales'
+import http from '@/lib/http'
 
 export default function signUp(body) {
-  return axios.post('/api/v1/users', body, {
-    headers: {
-      'Accept-Language': i18n.global.locale.value
-    }
-  })
+  return http.post('/api/v1/users', body)
 }
