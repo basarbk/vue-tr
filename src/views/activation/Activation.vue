@@ -4,10 +4,12 @@
 </template>
 <script setup>
 import axios from 'axios'
-import { onMounted } from 'vue'
+import { watchEffect } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
-onMounted(() => {
-  axios.patch('/api/v1/users/token-from-url/active')
+watchEffect(() => {
+  axios.patch(`/api/v1/users/${route.params.token}/active`)
 })
 </script>
 <!-- <script>
@@ -15,7 +17,12 @@ import axios from 'axios'
 
 export default {
   mounted() {
-    axios.patch('/api/v1/users/token-from-url/active')
+    axios.patch(`/api/v1/users/${this.$route.params.token}/active`)
+  },
+  watch: {
+    '$route.params.token'() {
+      axios.patch(`/api/v1/users/${this.$route.params.token}/active`)
+    }
   }
 }
 </script> -->
