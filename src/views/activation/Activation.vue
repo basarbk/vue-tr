@@ -1,13 +1,15 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <span v-if="status === 'loading'" class="spinner-border" aria-hidden="true"></span>
-    <div v-if="status === 'fail'" class="alert alert-danger" role="alert">
+    <AppAlert v-if="status === 'loading'" variant="secondary" center>
+      <AppSpinner size="normal" />
+    </AppAlert>
+    <AppAlert v-if="status === 'fail'" variant="danger">
       {{ errorMessage }}
-    </div>
-    <div v-if="status === 'success'" class="alert alert-success" role="alert">
+    </AppAlert>
+    <AppAlert v-if="status === 'success'">
       {{ successMessage }}
-    </div>
+    </AppAlert>
   </div>
 </template>
 <script setup>
@@ -15,6 +17,8 @@ import axios from 'axios'
 import { watchEffect, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import AppSpinner from '@/components/AppSpinner.vue'
+import AppAlert from '@/components/AppAlert.vue'
 const { t } = useI18n()
 const route = useRoute()
 

@@ -26,28 +26,26 @@
           type="password"
           :help="passwordMatchError"
         />
-        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+        <AppAlert v-if="errorMessage" variant="danger">
           {{ errorMessage }}
-        </div>
+        </AppAlert>
         <div class="text-center">
           <button :disabled="isDisabled || apiProgress" class="btn btn-primary">
-            <span
-              v-if="apiProgress"
-              class="spinner-border spinner-border-sm"
-              aria-hidden="true"
-            ></span>
+            <AppSpinner v-if="apiProgress" />
             {{ $t('signUp') }}
           </button>
         </div>
       </div>
     </form>
-    <div v-else class="alert alert-success" role="alert">
+    <AppAlert v-else>
       {{ successMessage }}
-    </div>
+    </AppAlert>
   </div>
 </template>
 <script setup>
 import AppInput from '@/components/AppInput.vue'
+import AppSpinner from '@/components/AppSpinner.vue'
+import AppAlert from '@/components/AppAlert.vue'
 import signUp from './api'
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
