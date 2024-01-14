@@ -5,5 +5,8 @@
   "password": "Password",
   "passwordRepeat": "Password Repeat",
   "passwordMismatch": "Password mismatch",
-  "genericError": "Unexpected error occured, please try again"
+  "genericError": "Unexpected error occured, please try again",
+  "passwordReset": {
+    "request": "Reset password"
+  }
 }
