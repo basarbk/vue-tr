@@ -5,42 +5,21 @@
       <AppSpinner size="normal" />
     </AppAlert>
     <AppAlert v-if="status === 'fail'" variant="danger">
-      {{ errorMessage }}
+      {{ error }}
     </AppAlert>
     <AppAlert v-if="status === 'success'">
-      {{ successMessage }}
+      {{ data.message }}
     </AppAlert>
   </div>
 </template>
 <script setup>
-import { watchEffect, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 import AppSpinner from '@/components/AppSpinner.vue'
 import AppAlert from '@/components/AppAlert.vue'
 import activate from './api'
-const { t } = useI18n()
-const route = useRoute()
 
-const errorMessage = ref()
-const successMessage = ref()
-const status = ref()
+import useRouteParamApiRequest from '@/shared/useRouteParamApiRequest'
 
-watchEffect(async () => {
-  status.value = 'loading'
-  try {
-    const response = await activate(route.params.token)
-    successMessage.value = response.data.message
-    status.value = 'success'
-  } catch (apiError) {
-    if (apiError.response?.data?.message) {
-      errorMessage.value = apiError.response.data.message
-    } else {
-      errorMessage.value = t('genericError')
-    }
-    status.value = 'fail'
-  }
-})
+const { status, data, error } = useRouteParamApiRequest(activate, 'token')
 </script>
 <!-- <script>
 import AppSpinner from '@/components/AppSpinner.vue'
@@ -55,8 +34,8 @@ export default {
   data() {
     return {
       status: undefined,
-      errorMessage: undefined,
-      successMessage: undefined
+      error: undefined,
+      data: undefined
     }
   },
   mounted() {
@@ -67,13 +46,13 @@ export default {
       this.status = 'loading'
       try {
         const response = await activate(this.$route.params.token)
-        this.successMessage = response.data.message
+        this.data = response.data
         this.status = 'success'
       } catch (apiError) {
         if (apiError.response?.data?.message) {
-          this.errorMessage = apiError.response.data.message
+          this.error = apiError.response.data.message
         } else {
-          this.errorMessage = this.$t('genericError')
+          this.error = this.$t('genericError')
         }
         this.status = 'fail'
       }
