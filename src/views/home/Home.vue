@@ -1,4 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <h1>Home Page</h1>
+  <UserList />
 </template>
+<script setup>
+import UserList from './components/UserList.vue'
+</script>
