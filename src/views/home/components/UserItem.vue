@@ -1,5 +1,5 @@
 <template>
-  <li class="list-group-item list-group-item-action">
+  <li class="list-group-item list-group-item-action" @click="$router.push('/user/' + user.id)">
     <img src="/assets/profile.png" width="30" class="rounded-circle shadow-sm" />
     {{ user.username }}
   </li>
@@ -9,3 +9,8 @@ defineProps({
   user: Object
 })
 </script>
+<style scoped>
+li {
+  cursor: pointer;
+}
+</style>
