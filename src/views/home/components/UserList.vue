@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-for -->
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div class="card">
@@ -5,9 +6,7 @@
       <h2>{{ $t('userList.header') }}</h2>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item list-group-item-action" v-for="user in pageData.content">
-        {{ user.username }}
-      </li>
+      <UserItem v-for="user in pageData.content" :user="user" />
     </ul>
     <div class="card-footer text-center">
       <AppSpinner v-if="apiProgress" />
@@ -32,6 +31,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import loadUsers from './api'
 import AppSpinner from '@/components/AppSpinner.vue'
+import UserItem from './UserItem.vue'
 
 const apiProgress = ref()
 
