@@ -1,5 +1,5 @@
 import http from '@/lib/http'
 
-export default function loadUsers() {
-  return http.get('/api/v1/users', { params: { size: 3 } })
+export default function loadUsers(page = 0) {
+  return http.get('/api/v1/users', { params: { page, size: 3 } })
 }
