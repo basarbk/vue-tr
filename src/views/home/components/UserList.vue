@@ -1,12 +1,10 @@
-<!-- eslint-disable vue/valid-v-for -->
-<!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div class="card">
     <div class="card-header text-center">
       <h2>{{ $t('userList.header') }}</h2>
     </div>
     <ul class="list-group list-group-flush">
-      <UserItem v-for="user in pageData.content" :user="user" />
+      <UserItem v-for="user in pageData.content" :user="user" :key="user.id" />
     </ul>
     <div class="card-footer text-center">
       <AppSpinner v-if="apiProgress" />
