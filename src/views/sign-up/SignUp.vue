@@ -30,10 +30,9 @@
           {{ errorMessage }}
         </AppAlert>
         <div class="text-center">
-          <button :disabled="isDisabled || apiProgress" class="btn btn-primary">
-            <AppSpinner v-if="apiProgress" />
+          <AppButton :api-progress="apiProgress" :is-disabled="isDisabled">
             {{ $t('signUp') }}
-          </button>
+          </AppButton>
         </div>
       </div>
     </form>
@@ -44,8 +43,8 @@
 </template>
 <script setup>
 import AppInput from '@/components/AppInput.vue'
-import AppSpinner from '@/components/AppSpinner.vue'
 import AppAlert from '@/components/AppAlert.vue'
+import AppButton from '@/components/AppButton.vue'
 import signUp from './api'
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'

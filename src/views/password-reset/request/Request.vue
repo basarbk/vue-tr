@@ -10,10 +10,9 @@
         <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>
         <AppAlert v-if="successMessage">{{ successMessage }}</AppAlert>
         <div class="text-center">
-          <button class="btn btn-primary" :disabled="!email || apiProgress">
-            <AppSpinner v-if="apiProgress" />
+          <AppButton :is-disabled="!email" :api-progress="apiProgress">
             {{ $t('passwordReset.request') }}
-          </button>
+          </AppButton>
         </div>
       </div>
     </form>
@@ -21,7 +20,7 @@
 </template>
 <script setup>
 import AppInput from '@/components/AppInput.vue'
-import AppSpinner from '@/components/AppSpinner.vue'
+import AppButton from '@/components/AppButton.vue'
 import AppAlert from '@/components/AppAlert.vue'
 import { ref, watch } from 'vue'
 import { passwordReset } from './api'
