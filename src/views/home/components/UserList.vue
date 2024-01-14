@@ -1,12 +1,14 @@
 <template>
-  <div class="card">
-    <div class="card-header text-center">
+  <AppCard>
+    <template v-slot:header>
       <h2>{{ $t('userList.header') }}</h2>
-    </div>
-    <ul class="list-group list-group-flush">
-      <UserItem v-for="user in pageData.content" :user="user" :key="user.id" />
-    </ul>
-    <div class="card-footer text-center">
+    </template>
+    <template v-slot:default>
+      <ul class="list-group list-group-flush">
+        <UserItem v-for="user in pageData.content" :user="user" :key="user.id" />
+      </ul>
+    </template>
+    <template v-slot:footer>
       <AppSpinner v-if="apiProgress" />
       <button
         v-if="pageData.page !== 0"
@@ -22,13 +24,14 @@
       >
         {{ $t('userList.next') }}
       </button>
-    </div>
-  </div>
+    </template>
+  </AppCard>
 </template>
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
 import loadUsers from './api'
 import AppSpinner from '@/components/AppSpinner.vue'
+import AppCard from '@/components/AppCard.vue'
 import UserItem from './UserItem.vue'
 
 const apiProgress = ref()

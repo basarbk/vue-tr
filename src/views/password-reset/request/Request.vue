@@ -1,20 +1,22 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
-    <form class="card" @submit.prevent="submit">
-      <div class="card-header text-center">
-        <h1>{{ $t('passwordReset.request') }}</h1>
-      </div>
-      <div class="card-body">
-        <AppInput id="e-mail" :label="$t('email')" :help="errors.email" v-model="email" />
-        <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>
-        <AppAlert v-if="successMessage">{{ successMessage }}</AppAlert>
-        <div class="text-center">
-          <AppButton :is-disabled="!email" :api-progress="apiProgress">
-            {{ $t('passwordReset.request') }}
-          </AppButton>
-        </div>
-      </div>
+    <form @submit.prevent="submit">
+      <AppCard>
+        <template v-slot:header>
+          <h1>{{ $t('passwordReset.request') }}</h1>
+        </template>
+        <template v-slot:body>
+          <AppInput id="e-mail" :label="$t('email')" :help="errors.email" v-model="email" />
+          <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>
+          <AppAlert v-if="successMessage">{{ successMessage }}</AppAlert>
+          <div class="text-center">
+            <AppButton :is-disabled="!email" :api-progress="apiProgress">
+              {{ $t('passwordReset.request') }}
+            </AppButton>
+          </div>
+        </template>
+      </AppCard>
     </form>
   </div>
 </template>
@@ -22,6 +24,7 @@
 import AppInput from '@/components/AppInput.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppAlert from '@/components/AppAlert.vue'
+import AppCard from '@/components/AppCard.vue'
 import { ref, watch } from 'vue'
 import { passwordReset } from './api'
 import { useI18n } from 'vue-i18n'
