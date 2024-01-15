@@ -24,9 +24,16 @@ export const useAuthStore = defineStore('auth', () => {
     auth.image = data.image
   }
 
+  function logout() {
+    auth.id = 0
+    delete auth.username
+    delete auth.email
+    delete auth.image
+  }
+
   watch(auth, () => {
     localStorage.setItem('auth', JSON.stringify(auth))
   })
 
-  return { auth, setLoggedIn }
+  return { auth, setLoggedIn, logout }
 })

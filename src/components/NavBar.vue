@@ -15,13 +15,26 @@
           <li class="nav-item">
             <router-link class="nav-link" :to="'/user/' + auth.id">My Profile</router-link>
           </li>
+          <li class="nav-item">
+            <span role="button" class="nav-link" @click="onClickLogout">{{ $t('logout') }}</span>
+          </li>
         </template>
       </ul>
     </div>
   </nav>
 </template>
 <script setup>
+import http from '@/lib/http'
 import { useAuthStore } from '@/stores/auth'
 
-const { auth } = useAuthStore()
+const { auth, logout } = useAuthStore()
+
+const onClickLogout = async () => {
+  try {
+    await http.post('/api/v1/logout')
+  } catch {
+    /* empty */
+  }
+  logout()
+}
 </script>
