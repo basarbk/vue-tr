@@ -6,7 +6,7 @@
         width="200"
         height="200"
         :alt="user.username + ' profile'"
-        src="/assets/profile.png"
+        :src="tempImage || '/assets/profile.png'"
       />
     </template>
     <template v-slot:body>
@@ -19,7 +19,12 @@
           <div class="mt-3"></div>
           <UserDeleteButton :id="user.id" />
         </template>
-        <EditForm v-if="editMode" @cancel="editMode = false" @save="editMode = false" />
+        <EditForm
+          v-if="editMode"
+          @cancel="onClickCancel"
+          @save="editMode = false"
+          @newImage="onNewImage"
+        />
       </div>
     </template>
   </AppCard>
@@ -38,6 +43,17 @@ const props = defineProps({
 
 const editMode = ref(false)
 const { auth } = useAuthStore()
+
+const tempImage = ref()
+
+const onNewImage = (data) => {
+  tempImage.value = data
+}
+
+const onClickCancel = () => {
+  editMode.value = false
+  tempImage.value = undefined
+}
 
 const username = computed(() => (auth.id === props.user.id ? auth.username : props.user.username))
 </script>
