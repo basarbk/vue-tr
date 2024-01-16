@@ -1,12 +1,13 @@
 <template>
   <AppCard>
     <template v-slot:header>
-      <img
+      <ProfileImage
         class="rounded-circle shadow"
         width="200"
         height="200"
         :alt="user.username + ' profile'"
-        :src="tempImage || '/assets/profile.png'"
+        :tempImage="tempImage"
+        :image="image"
       />
     </template>
     <template v-slot:body>
@@ -32,6 +33,7 @@
 <script setup>
 import AppCard from '@/components/AppCard.vue'
 import AppButton from '@/components/AppButton.vue'
+import ProfileImage from '@/components/ProfileImage.vue'
 import UserDeleteButton from './UserDeleteButton.vue'
 import { useAuthStore } from '@/stores/auth'
 import EditForm from './EditForm.vue'
@@ -56,4 +58,6 @@ const onClickCancel = () => {
 }
 
 const username = computed(() => (auth.id === props.user.id ? auth.username : props.user.username))
+
+const image = computed(() => (auth.id === props.user.id ? auth.image : props.user.image))
 </script>
