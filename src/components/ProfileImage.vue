@@ -1,5 +1,5 @@
 <template>
-  <img :src="path" />
+  <img :src="path" @error="($event) => ($event.target.src = '/assets/profile.png')" />
 </template>
 <script setup>
 import { computed } from 'vue'
