@@ -7,6 +7,7 @@
       :id="id"
       @input="$emit('update:modelValue', $event.target.value)"
       :type="type"
+      :value="modelValue"
     />
     <div class="invalid-feedback">
       {{ help }}
