@@ -17,6 +17,7 @@
               <ProfileImage
                 :alt="auth.username + ' profile'"
                 width="30"
+                height="30"
                 class="rounded-circle shadow-sm"
                 :image="auth.image"
               />

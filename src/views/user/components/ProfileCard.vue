@@ -22,8 +22,8 @@
         </template>
         <EditForm
           v-if="editMode"
-          @cancel="onClickCancel"
-          @save="editMode = false"
+          @cancel="onEditFinish"
+          @save="onEditFinish"
           @newImage="onNewImage"
         />
       </div>
@@ -52,7 +52,7 @@ const onNewImage = (data) => {
   tempImage.value = data
 }
 
-const onClickCancel = () => {
+const onEditFinish = () => {
   editMode.value = false
   tempImage.value = undefined
 }
